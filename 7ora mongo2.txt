@@ -1,0 +1,9 @@
+//mongo_melleklet_2 feladat
+db.collection.find({
+  firstName: "Grace"
+},
+{
+  email: 1,
+  password: 1,
+  _id: 0
+})
