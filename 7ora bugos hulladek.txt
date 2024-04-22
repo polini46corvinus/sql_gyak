@@ -1,7 +1,0 @@
-4. feladat: {class_id: 339, student_id: {$lt: 100}}
-
-db.receptek.find({likes_count: {$gt: 2}}, {rating: 0})
-
-db.receptek.find({likes_count: {$gt: 2}}, {rating: 0}).sort({cook_time: -1})
-
-db.receptek.find( {title: {$regex:/Tacos/}} ) //gyakorlatilag ez a LIKE.. két ilyen per jel közé kell
