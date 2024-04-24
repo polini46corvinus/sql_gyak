@@ -1,0 +1,50 @@
+sample_mflix> db.movies.aggregate([{$group: {_id:'$year', atlag: {$avg:'num_mflix_comments'}}}])
+
+
+saját:
+sample_mflix> db.movies.find({runtime: {$gt:15, $lt:20}}, {_id:0, title:1}).sort('title')
+sample_mflix> db.movies.find({runtime: {$gte:15, $lte:20}}, {_id:0, title:1}).sort('title')
+
+órai:
+sample_mflix> db.movies.find({runtime: {$gte:15}, runtime: {$lte:20}}, {_id:0, title:1})
+
+
+neo4j
+17. feladat
+match (p:Person)
+where p.born = 1964 or p.born = 1965
+return p.name, p.born
+
+18. feladat
+match (p:Movie)
+where p.title starts with 'A'
+return p.title, p.released
+order by p.released desc
+
+19. feladat
+//a csúcsok kerek zárójelbe, a kapcsolatok szögletesbe.. asszem
+match (p:Person)-[:PRODUCED]->(m:Movie)
+where p.name = 'Joel Silver'
+return m.title
+order by m.title desc
+
+20. feladat
+match (p:Person)-[:DIRECTED]-(m:Movie)
+return p.name, count(*)
+
+a "->" nyíl az irányított kapcsolatot jelenti
+
+match (p:Person)-[:DIRECTED]-(m:Movie)
+with p.name AS nev, count(*) AS db
+where db > 1
+return nev, db
+
+21. feladat
+itt a kapcsolatok iránya a lényeg
+match (p:Person)-[:ACTED_IN]->(m:Movie)<-[:DIRECTED]-(p:Person)
+return p.name
+
+
+
+17-től 22-ig kell
+a 27-28 már nem kell !!!
