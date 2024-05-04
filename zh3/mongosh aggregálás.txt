@@ -1,0 +1,13 @@
+ezek csak gyakorlások amikkel itthon szenvedtem de végre működnek
+
+
+Atlas atlas-yl41mu-shard-0 [primary] gyak8> db.receptek.aggregate([ {$group: {_id:'$type', total: {$sum: '$prep_time'}}} ])
+[
+  { _id: 'Dinner', total: 47 },
+  { _id: 'Dessert', total: 37 },
+  { _id: 'Breakfast', total: 10 }
+
+
+
+Atlas atlas-yl41mu-shard-0 [primary] gyak8> db.receptek.aggregate([ {$group: {_id:'$type', totalll: {$sum: '$prep_time'}}}, {$match: {totalll:{$gt:30}}} ])
+[ { _id: 'Dinner', totalll: 47 }, { _id: 'Dessert', totalll: 37 } ]
