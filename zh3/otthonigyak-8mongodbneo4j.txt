@@ -1,0 +1,152 @@
+#########################################################
+MongoDB:
+1.
+db.collection.find({},
+{
+  "_id": 0,
+  "user_id": 1,
+  "firstName": 1,
+  "lastname": 1
+})
+
+#########################################################
+2.
+db.collection.find({
+  "firstName": "Grace"
+},
+{
+  "_id": 0,
+  "email": 1,
+  "password": 1
+})
+
+#########################################################
+4.
+Filter: {"class_id": 339, "student_id": {$lt: 100}}
+
+#########################################################
+7.
+Filter: {"likes_count": {$gt: 2}}
+Project: {"ingredients": 0, "rating": 0}
+Sort: {"cook_time": -1}
+
+#########################################################
+11.
+db.receptek.find({"title": {$regex: /Tacos/}}).pretty()
+
+#########################################################
+12.
+db.receptek.aggregate([{$group:{_id:"$type", ossz: {$sum:"$cook_time"}}}])
+
+#########################################################
+13.
+db.receptek.find( {$and:[{servings: 4}, {tags:{$in:["quick", "easy"]}} ] }).count()
+
+
+
+
+#########################################################
+Neo4J:
+#########################################################
+17.
+match(p:Person)
+where p.born = 1964 or p.born = 1965
+return p.name, p.born
+
+#########################################################
+18.
+match (m:Movie)
+where m.title starts with "A"
+return m.released, m.title
+order by m.released desc
+
+#########################################################
+19.
+match (p:Person)-[:PRODUCED]->(m:Movie)
+// itt a sorrend is fontos: az "ember" "rendezte" a "filmet"
+where p.name = 'Joel Silver'
+return m.title
+
+#########################################################
+20.
+match (p:Person)-[:DIRECTED]->(m:Movie)
+with p, count(*) as db
+where db > 1
+return p.name, db
+
+#########################################################
+21.
+match (p:Person)-[:ACTED_IN]->(m:Movie)<-[:DIRECTED]-(p:Person)
+return p.name
+//alternatív:
+match (p:Person)-[:ACTED_IN]->(m:Movie)
+where exists (((p:Person)-[:DIRECTED]->(m:Movie))
+return p.name
+
+#########################################################
+22.
+match (p:Person)-[:ACTED_IN]->(m:Movie)
+with m, count(*) as db
+return m.title, db
+order by db desc, m.title asc
+limit 10
+
+#########################################################
+24.
+profile //ez a végrehajtási terv
+match (p:Person)
+where p.born >= 1980 and p.born <=2000
+return p.name, p.born
+
+#########################################################
+27:
+create database tanulo //ezt külön kell benyomni először,  csak utána a többit
+
+create (:tanulo {nev:"Kiss Béla", eletkor: 22, atlag: 3.5}),
+(:tanulo {nev: "Nagy Ilona", eletkor:23, atlag: 4.4}),
+(:tanar {nev: "Tóth Ottó", szak: "matematika"}),
+(:tanar {nev: "Nagy Ivett", szak: "informatika"})
+
+match (p) //ezt is külön kell
+return (p)
+
+#########################################################
+28:
+match (t:tanar), (tan:tanulo)
+where t.nev = "Tóth Ottó" and tan.nev = "Kiss Béla"
+create (t)-[:tanit]->(tan)
+
+match (t:tanar), (tan:tanulo) //ezt is külön kell
+where t.nev = "Nagy Ivett" and tan.nev = "Nagy Ilona"
+create (t)-[:tanit]->(tan)
+
+#########################################################
+Minta ZH GYAKORLÓ:
+db.movies.find({cast:{$in:["Billie Dove"]}},{_id:0, title:1, cast:1, year:1})
+
+db.movies.aggregate([{$unwind: "$cast"}, {$group: {_id:"$cast", atlag: {$avg:"$num_mflix_comments"}}}, {$match:{atlag:{$gt:3}}}, {$sort:{atlag: -1}} ])
+
+match (m:Movie)<-[:ACTED_IN]-(p:Person)
+with m, count(*) as db
+where not m.title contains "Speed"
+return m.title, db
+order by db desc
+limit 5
+
+match (p:Person)-[:WROTE]->(m:Movie)
+with p, count(*) as db
+where p.name starts with "L" and db > 1
+return p.name, db
+
+#########################################################
+plusz cuccok:
+# Mongodb ez-az-amaz
+4. feladat: {class_id: 339, student_id: {$lt: 100}}
+db.receptek.find({likes_count: {$gt: 2}}, {rating: 0})
+db.receptek.find({likes_count: {$gt: 2}}, {rating: 0}).sort({cook_time: -1})
+db.receptek.find( {title: {$regex:/Tacos/}} ) //gyakorlatilag ez a LIKE.. két ilyen per jel közé kell
+
+# Mongodb aggregálás gyak:
+db.receptek.aggregate([ {$group: {_id:'$type', total: {$sum: '$prep_time'}}} ])
+db.receptek.aggregate([ {$group: {_id:'$type', totalll: {$sum: '$prep_time'}}}, {$match: {totalll:{$gt:30}}} ])
+//1337h4x
