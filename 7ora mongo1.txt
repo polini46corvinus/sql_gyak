@@ -1,0 +1,9 @@
+//mongo_melleklet_1 feladat
+
+db.collection.find({}, //az első a 'where', de üresen kell hagyni ha csak a 2. paraméter kell nekünk
+{
+  firstName: 1, //amit látni akarok, oda 1-est írok
+  lastname: 1,
+  user_id: 1,
+  _id: 0 //ide azért kell a 0 mert a rendszer odateszi alapból és ki kell offolnunk ha nem kell ez a mező
+})
