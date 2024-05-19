@@ -1,0 +1,42 @@
+Ajánlott feladatok:
+Cassandra (11-es feladatsor): 16-17, 20-21, 23-25, 27-30
+
+19. feladat:
+select count(*) from movies_and_tv;
+
+20. feladat:
+select title from movies_and_tv where type = 'Movie' AND release_year = 2018 limit 3;
+
+21. feladat:
+select type, release_year, count(*) from movies_and_tv group by type, release_year;
+
+23. feladat:
+create table szemely (nev TEXT, szulev INT, foglalkozas TEXT, primary key ((nev, szulev), foglalkozas));
+
+24. feladat:
+insert into szemely (nev, szulev, foglalkozas) values ('Kiss Bela', 2000, 'lakatos');
+insert into szemely (nev, szulev, foglalkozas) values ('Nagy Ivo', 1999, 'diak');
+insert into szemely (nev, szulev, foglalkozas) values ('Toth Otto', 1980, 'pincer');
+select * from szemely;
+
+25. feladat:
+create index i_foglalkozas on szemely (foglalkozas);
+
+26. feladat:
+select nev from szemely where foglalkozas in ('pincer', 'lakatos') allow filtering;
+
+27. feladat:
+alter table szemely add vegzettseg list<text>;
+update szemely set vegzettseg = ['gepesz', 'muszeresz'] where nev = 'Kiss Bela' and szulev = 2000 and foglalkozas = 'lakatos';
+
+28. feladat:
+alter table szemely add Nyelvtudas set<text>;
+update szemely set nyelvtudas = nyelvtudas + {'angol', 'francia'} where nev = 'Nagy Ivo' and szulev = 1999 and foglalkozas = 'diak';
+
+29. feladat:
+alter table szemely add Autok map<text, text>;
+update szemely set Autok = Autok + {'Skoda Fabia': 'abc-111', 'Audi A4': 'xyz-222'} where nev = 'Kiss Bela' and szulev = 2000 and foglalkozas = 'lakatos';
+
+30. feladat:
+update szemely set nyelvtudas = nyelvtudas + {'nemet'} where nev = 'Nagy Ivo' and szulev = 1999 and foglalkozas = 'diak';
+update szemely set vegzettseg = vegzettseg + ['barmixer'] where nev = 'Toth Otto' and szulev = 1980 and foglalkozas = 'pincer';

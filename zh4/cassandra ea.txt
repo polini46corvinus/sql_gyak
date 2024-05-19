@@ -1,0 +1,8 @@
+token@cqlsh> desc keyspaces;
+token@cqlsh> use gyakorlo;
+token@cqlsh:gyakorlo> desc tables;
+token@cqlsh:gyakorlo> select count(*) from movies_and_tv;
+token@cqlsh:gyakorlo> select * from movies_and_tv limit 5;
+token@cqlsh:gyakorlo> desc table movies_and_tv;
+token@cqlsh:gyakorlo> create table probalkozzunk (id INT, nev VARCHAR, teszt varchar, primary key (id));
+token@cqlsh:gyakorlo> insert into probalkozzunk (id, nev, teszt) values (1,'Béla','teszt1');
